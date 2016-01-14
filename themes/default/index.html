@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{{title}}</title>
+</head>
+<body>
+
+<h3>menu</h3>
+{{#each menu}}
+[<a href="{{url}}">{{label}}</a>] -
+{{/each}}
+
+<h3>tags</h3>
+{{#each tags}}
+<span>({{@index}}) {{this}}</span> -
+{{/each}}
+
+<h3>body</h3>
+{{body}}
+</body>
+</html>
