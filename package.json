@@ -1,0 +1,27 @@
+{
+  "name": "assimilator",
+  "version": "1.0.0",
+  "description": "Super fast blogging engine",
+  "main": "index.js",
+  "dependencies": {
+    "handlebars": "^4.0.5",
+    "hapi": "^12.1.0",
+    "hoek": "^3.0.4",
+    "inert": "^3.2.0",
+    "vision": "^4.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/indieforger/assimilator.git"
+  },
+  "author": "https://github.com/indieforger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/indieforger/assimilator/issues"
+  },
+  "homepage": "https://github.com/indieforger/assimilator#readme"
+}
