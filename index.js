@@ -19,7 +19,6 @@ const
 		tasklists: true
 	})
 
-
 const config = {
 	blog: {
 		title: 'My personal site',
@@ -106,7 +105,12 @@ server.register([
 })
 
 
+fsSniff.tree(config.blog.path, (categories) => {
+	config.blog.categories = categories
 
-server.start(function () {
-	console.log('Server started at: ' + server.info.uri)
-});
+	server.start(function () {
+		console.log('Server started at: ' + server.info.uri)
+	});
+})
+
+
