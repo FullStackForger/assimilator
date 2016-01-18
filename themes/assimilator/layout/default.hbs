@@ -6,26 +6,13 @@
 	<title>Your Title</title>
 	<meta name="HandheldFriendly" content="True" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="../styles/main.css" rel="stylesheet" />
 </head>
 <body>
-
-<div class="container">
-
-	<h3>menu</h3>
-	{{#each menu}}
-	[<a href="{{url}}">{{label}}</a>] -
-	{{/each}}
-
-
-	<h3>tags</h3>
-	{{#each tags}}
-	<span>({{@index}}) {{this}}</span> -
-	{{/each}}
-
-	<h3>body</h3>
-	{{! Every view gets inserted here }}
-	{{{content}}}
-</div>
-
+	<div class="container">
+		{{> header}}
+		{{{content}}}
+	</div>
+	{{> footer}}
 </body>
 </html>

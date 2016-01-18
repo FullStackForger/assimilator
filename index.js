@@ -56,36 +56,38 @@ server.register([
 
 	server.views({
 		engines: {
-			html: handlebars
+			hbs: handlebars
 		},
 		context: config.blog,
 		relativeTo: __dirname,
 		path: config.theme.path,
 		layoutPath: path.join(config.theme.path, 'layout'),
+		helpersPath: path.join(config.theme.path, 'helpers'),
+		partialsPath: path.join(config.theme.path, 'partials'),
 		layout: 'default'
-		//helpersPath: 'views/helpers',
-		//partialsPath: 'views/partials'
 	})
 
 	let routes = []
 
 	routes.push({
 		method: 'GET',
-			path: '/{uri*}',
-			handler: function (request, reply) {
+		path: '/{uri*}',
+		handler: function (request, reply) {
 			let uri = request.params.uri || ''
-			let filePath = path.resolve(config.files.path, uri);
+			let locations = [
+				path.join(config.files.path, uri),
+				path.join(config.theme.path, uri)
+			]
 
 			//console.log('====================================')
 			//console.log(util.inspect(request, { depth: 2 }));
 			//console.log('pathname', request.url.pathname)
 			//console.log('referrer', request.info.referrer)
 
-			fsSniff.file(filePath, { index: config.files.index }).then((file) => {
-				console.log('file')
+			fsSniff.file(locations, { index: config.files.index }).then((file) => {
 				return reply.file(file.path)
 			}).catch(function () {
-				let articlePath = path.resolve(config.blog.path, uri)
+				let articlePath = path.join(config.blog.path, uri)
 				fsSniff.file(articlePath, { ext: '.md' }).then((file) => {
 					fs.readFile(file.path, 'utf8', function (err, data) {
 						if (err) console.log(err);
@@ -94,8 +96,7 @@ server.register([
 						})
 					});
 				}).catch(function (error) {
-					console.log('error')
-					return reply('<h1>404</h1><h3>File not found</h3>', error).code(404)
+					reply('<h1>404</h1><h3>File not found</h3>', error).code(404)
 				})
 			})
 		}
