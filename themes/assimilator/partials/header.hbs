@@ -1,23 +1,4 @@
-<header class="main-header">
-	<nav class="navbar navbar-default">
-		<div class="container">
-			<div class="collapse navbar-collapse">
-				<ul class="nav navbar-nav">
-					{{#each menu.main}}
-						<li><a href="{{url}}">{{label}}</a></li>
-					{{/each}}
-				</ul>
-			</div>
-		</div>
-	</nav>
-</header>
-
-<h3>tags</h3>
-{{#each tags}}
-	<span>({{@index}}) {{this}}</span> -
-{{/each}}
-
-
+{{> tags}}
 <h3>categories</h3>
 {{#each categories}}
 	<span>({{@index}}) {{this}}</span> -

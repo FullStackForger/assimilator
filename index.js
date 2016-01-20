@@ -1,6 +1,5 @@
 'use strict';
 
-
 const
 	Hapi = require('hapi'),
 	Hoek = require('hoek'),
@@ -90,7 +89,7 @@ server.register([
 				fsSniff.file(articlePath, { ext: '.md' }).then((file) => {
 					fs.readFile(file.path, 'utf8', function (err, data) {
 						if (err) console.log(err);
-						return reply.view('index', {
+						return reply.view('post', {
 							text: markdown.makeHtml(data)
 						})
 					});
@@ -104,6 +103,18 @@ server.register([
 	server.route(routes)
 })
 
+{
+	categories: [{
+		name: 'category 1',
+		pages: [{
+			'title': 'some blog post'
+		}],
+		categories: [{
+			/*....*/
+		}],
+		tags: ['tag1', 'tag2', 'tag3']
+	}]
+}
 
 fsSniff.tree(config.blog.path, (categories) => {
 	config.blog.categories = categories

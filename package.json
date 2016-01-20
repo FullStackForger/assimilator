@@ -12,8 +12,11 @@
     "showdown": "^1.3.0",
     "vision": "^4.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.8.1"
+  },
   "scripts": {
+    "nodemon": "nodemon index.js -e js,html,css,hbs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
