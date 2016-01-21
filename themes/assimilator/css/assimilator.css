@@ -31,7 +31,8 @@ h1, h2, h3, h4, h5, h6 {
 	text-transform:uppercase;
 	*/
 	font-weight:300;
-	line-height:1em;}
+	line-height:1em;
+}
 
 h1 { font-size:2.6em; }
 h2 { font-size:2.4em; }
@@ -83,6 +84,7 @@ hr.small {
 	font-weight: bolder;
 	color: white;
 	background-size: 400% 240%;
+	cursor: pointer;
 }
 
 .item-tags a:hover {
@@ -223,6 +225,21 @@ hr.small {
 		transform: translate3d(0, 100%, 0);
 	}
 }
+
+.sidebar .categories li:before {
+	margin-right: 0.5em;
+	content: '\25b6';
+	color: #dedede;
+}
+.sidebar .categories li {
+	margin: 0;
+	padding: 0.5em 0 0.5em 0em;
+	border-top: 1px solid #efefef;
+}
+.sidebar .categories > ul > li:first-child { border-top: none; }
+.sidebar .categories li a:hover { color: #337ab7; }
+.sidebar .categories li > ul { margin: 0.5em 0 0 1em; }
+
 .intro-header {
 	background-color: #808080;
 	background: no-repeat center center;

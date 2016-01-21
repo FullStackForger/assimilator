@@ -55,8 +55,7 @@ server.register([
 	server.views({
 		engines: {
 			hbs: handlebars
-		},
-		context: config.blog,
+		}, context: config.blog,
 		relativeTo: __dirname,
 		path: config.theme.path,
 		layoutPath: path.join(config.theme.path, 'layout'),
