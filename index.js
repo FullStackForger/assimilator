@@ -29,7 +29,7 @@ const config = {
 			]
 		},
 		tags: ['blog', 'writing', 'engine', 'hapijs'],
-		path: 'blog/'
+		path: 'blog'
 	},
 	files: {
 		index: ['index.html', 'index.htm'],
@@ -76,11 +76,6 @@ server.register([
 				path.join(config.theme.path, uri)
 			]
 
-			//console.log('====================================')
-			//console.log(util.inspect(request, { depth: 2 }));
-			//console.log('pathname', request.url.pathname)
-			//console.log('referrer', request.info.referrer)
-
 			fsSniff.file(locations, { index: config.files.index }).then((file) => {
 				return reply.file(file.path)
 			}).catch(function () {
@@ -102,25 +97,52 @@ server.register([
 	server.route(routes)
 })
 
-{
-	categories: [{
-		name: 'category 1',
-		pages: [{
-			'title': 'some blog post'
-		}],
-		categories: [{
-			/*....*/
-		}],
-		tags: ['tag1', 'tag2', 'tag3']
-	}]
-}
+/*
+fsSniff
+	.list(config.blog.path, {type: 'dir', depth: 2})
+	.then((list) => {
+		console.log(JSON.stringify(list, null, 2))
+	})
 
-fsSniff.tree(config.blog.path, (categories) => {
-	config.blog.categories = categories
-
-	server.start(function () {
-		console.log('Server started at: ' + server.info.uri)
-	});
+*/
+generateCategories(config.blog.path)
+	.then((categories) => {
+		config.blog.categories = categories
+		config.blog.url = server.info.uri
+		server.start(function () {
+			console.log('Server started at: ' + server.info.uri)
+		});
 })
+
+function generateCategories(location) {
+	function categoryFromTree(dirTree) {
+		let dirArr = dirTree instanceof Array ? dirTree : [dirTree]
+		return dirArr.map((dirObj) => {
+			try {
+				return {
+					name: dirObj.name,
+					uri: dirObj.uri.replace(/^blog\//, ''),
+					posts: dirObj.files.length,
+					hasChildren: (dirObj.dirs.length > 0),
+					childrenNumber: dirObj.dirs.length,
+					categories: categoryFromTree(dirObj.dirs)
+				}
+			} catch (err) {
+				console.log(err)
+				throw new Error(err)
+			}
+		})
+	}
+
+	return new Promise((resolve, reject) => {
+		return fsSniff
+			.tree(location, {depth: 10})
+			.then((dirTree) => {
+				resolve(categoryFromTree(dirTree.dirs))
+			}).catch((error) => {
+				reject(error)
+			})
+	})
+}
 
 
