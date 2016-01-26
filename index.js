@@ -83,7 +83,7 @@ server.register([
 				fsSniff.file(articlePath, { ext: '.md' }).then((file) => {
 					fs.readFile(file.path, 'utf8', function (err, data) {
 						if (err) console.log(err);
-						return reply.view('example', {
+						return reply.view('post', {
 							text: markdown.makeHtml(data)
 						})
 					});
