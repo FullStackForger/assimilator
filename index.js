@@ -70,8 +70,19 @@ server.register([
 
 	routes.push({
 		method: 'GET',
+		path: '/',
+		handler: function (requestm, reply) {
+			return reply.view('index', {
+				text: 'index'
+			})
+		}
+	})
+
+	routes.push({
+		method: 'GET',
 		path: '/{uri*}',
 		handler: function (request, reply) {
+
 			let uri = request.params.uri || ''
 			let locations = [
 				path.join(config.files.path, uri),
@@ -112,15 +123,7 @@ server.register([
 	server.route(routes)
 })
 
-/*
-fsSniff
-	.list(config.blog.path, {type: 'dir', depth: 2})
-	.then((list) => {
-		console.log(JSON.stringify(list, null, 2))
-	})
-
-*/
-generateCategories(config.blog.path)
+indexCategories(config.blog.path)
 	.then((categories) => {
 		config.blog.categories = categories
 		//console.log(JSON.stringify(categories, null, 2))
@@ -149,7 +152,17 @@ function findCategory(uri) {
 	return traverseCategories(uri, config.blog.categories)
 }
 
-function generateCategories(location) {
+function indexArticles(location) {
+	return new Promise((resolve, reject) => {
+		fsSniff
+			.list(config.blog.path, { type: 'file', depth: 10 })
+			.then((list) => {
+				console.log(JSON.stringify(list, null, 2))
+			})
+	})
+}
+
+function indexCategories(location) {
 	let categoryFromTree = function(dirTree) {
 		let dirArr = dirTree instanceof Array ? dirTree : [dirTree]
 		return dirArr.map((dirObj) => {
@@ -172,7 +185,7 @@ function generateCategories(location) {
 
 	return new Promise((resolve, reject) => {
 		return fsSniff
-			.tree(location, {depth: 10})
+			.tree(location, { depth: 10 })
 			.then((dirTree) => {
 				resolve(categoryFromTree(dirTree.dirs))
 			}).catch((error) => {

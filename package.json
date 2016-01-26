@@ -4,7 +4,7 @@
   "description": "Super fast blogging engine",
   "main": "index.js",
   "dependencies": {
-    "fs-sniff": "^1.0.0",
+    "fs-sniff": "^1.5.2",
     "handlebars": "^4.0.5",
     "hapi": "^12.1.0",
     "hoek": "^3.0.4",
