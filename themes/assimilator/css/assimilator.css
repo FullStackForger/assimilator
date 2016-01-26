@@ -34,12 +34,12 @@ h1, h2, h3, h4, h5, h6 {
 	line-height:1em;
 }
 
-h1 { font-size:2.6em; }
-h2 { font-size:2.4em; }
-h3 { font-size:2.2em; }
-h4 { font-size:1.8em; }
-h5 { font-size:1.6em; }
-h6 { font-size:1.5em; }
+h1 { font-size:2.6em; line-height: 1.4em; }
+h2 { font-size:2.2em; line-height: 1.4em; }
+h3 { font-size:2.0em; line-height: 1.4em; }
+h4 { font-size:1.8em; line-height: 1.4em; }
+h5 { font-size:1.6em; line-height: 1.4em; }
+h6 { font-size:1.5em; line-height: 1.4em; }
 
 h1 span, h2 span, h3 span ,h4 span, h5 span, h6 span { font-weight:400; }
 

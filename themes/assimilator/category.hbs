@@ -1,0 +1,21 @@
+<article class="category-details">
+	<h1>{{category.name}}</h1>
+
+	{{#if category.hasCategories}}
+		<h5>Categories</h5>
+		{{#each category.categories}}
+			<li><a href="{{url}}/{{this.uri}}">{{!@index}}{{this.name}} ({{this.articles.length}})</a></li>
+		{{/each}}
+	{{/if}}
+
+	{{#if category.hasArticles}}
+		<h5>Articles</h5>
+		{{#each category.articles}}
+			<li>
+				<a href="{{../url}}/{{../category.uri}}/{{this}}">{{!@index}}{{this}}</a>
+			</li>
+		{{/each}}
+	{{/if}}
+
+	<p><pre>{{text}}</pre></p>
+</article>

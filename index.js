@@ -52,6 +52,8 @@ server.register([
 
 	Hoek.assert(!err, err)
 
+	config.blog.url = server.info.uri
+
 	server.views({
 		engines: {
 			hbs: handlebars
@@ -77,16 +79,29 @@ server.register([
 			]
 
 			fsSniff.file(locations, { index: config.files.index }).then((file) => {
-				return reply.file(file.path)
-			}).catch(function () {
+				if (file.stats.isFile()) {
+					// render static file
+					return reply.file(file.path)
+				}
+			}).catch(function (err) {
 				let articlePath = path.join(config.blog.path, uri)
 				fsSniff.file(articlePath, { ext: '.md' }).then((file) => {
-					fs.readFile(file.path, 'utf8', function (err, data) {
-						if (err) console.log(err);
-						return reply.view('post', {
-							text: markdown.makeHtml(data)
+					if (file.stats.isFile()) {
+						// render markdown
+						fs.readFile(file.path, 'utf8', function (err, data) {
+							if (err) console.log(err);
+							return reply.view('post', {
+								text: markdown.makeHtml(data)
+							})
 						})
-					});
+					} else if (file.stats.isDirectory()) {
+						// render list sub-categories and posts
+						return reply.view('category', {
+							category: findCategory(uri),
+							text: JSON.stringify(findCategory(uri), null, 2)
+						})
+					}
+
 				}).catch(function (error) {
 					reply('<h1>404</h1><h3>File not found</h3>', error).code(404)
 				})
@@ -108,23 +123,44 @@ fsSniff
 generateCategories(config.blog.path)
 	.then((categories) => {
 		config.blog.categories = categories
-		config.blog.url = server.info.uri
+		//console.log(JSON.stringify(categories, null, 2))
 		server.start(function () {
 			console.log('Server started at: ' + server.info.uri)
 		});
 })
 
+function findCategory(uri) {
+	let traverseCategories = function(uri, categories) {
+		let category = null
+		let subcategory = null
+		let index = 0
+		while (index < categories.length) {
+			category = categories[index]
+			if (category.uri === uri) return category
+			if (category.hasCategories) {
+				subcategory = traverseCategories(uri, category.categories)
+				if (subcategory != null) return subcategory
+			}
+			index ++
+		}
+		return null
+	}
+
+	return traverseCategories(uri, config.blog.categories)
+}
+
 function generateCategories(location) {
-	function categoryFromTree(dirTree) {
+	let categoryFromTree = function(dirTree) {
 		let dirArr = dirTree instanceof Array ? dirTree : [dirTree]
 		return dirArr.map((dirObj) => {
 			try {
+				let uri = dirObj.uri.replace(/^blog\//, '')
 				return {
 					name: dirObj.name,
-					uri: dirObj.uri.replace(/^blog\//, ''),
-					posts: dirObj.files.length,
-					hasChildren: (dirObj.dirs.length > 0),
-					childrenNumber: dirObj.dirs.length,
+					uri: uri,
+					hasArticles: dirObj.files.length > 0,
+					articles: dirObj.files,
+					hasCategories: (dirObj.dirs.length > 0),
 					categories: categoryFromTree(dirObj.dirs)
 				}
 			} catch (err) {
@@ -144,5 +180,3 @@ function generateCategories(location) {
 			})
 	})
 }
-
-

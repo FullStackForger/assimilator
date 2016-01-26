@@ -1,8 +1,8 @@
 <ul class="list-unstyled">
 	{{#each categories}}
 		<li>
-			<a href="{{url}}/{{this.uri}}">{{!@index}}{{this.name}} ({{this.posts}})</a>
-			{{#if hasChildren}}
+			<a href="{{url}}/{{this.uri}}">{{!@index}}{{this.name}} ({{this.articles.length}})</a>
+			{{#if hasCategories}}
 				{{>internal/category-list}}
 			{{/if}}
 		</li>
