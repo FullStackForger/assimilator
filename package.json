@@ -16,7 +16,7 @@
     "nodemon": "^1.8.1"
   },
   "scripts": {
-    "nodemon": "nodemon index.js -e js,html,css,hbs",
+    "nodemon": "nodemon index.js  -e js,html,hbs,css,md",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
