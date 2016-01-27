@@ -35,6 +35,8 @@ const config = {
 
 new Assimilator
 	.Server(config)
-	.start(() => {
-		console.log('successful')
+	.start().then(() => {
+		//console.log('successful')
+	}).catch((err) => {
+		console.log(err)
 	})

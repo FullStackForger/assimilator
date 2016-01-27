@@ -28,11 +28,13 @@ const
 const Assimilator = {}
 Assimilator.Server = function (config) {
 	if (!config) console.error('Config is missing')
+	let _config = config
+
 	this.internal = {}
 	registerServer(config)
 	return {
 		 start: () => {
-			 startServer(config)
+			 return startServer(_config)
 		 }
 	}
 }
@@ -156,23 +158,52 @@ function registerServer(config) {
 	})
 }
 
+
 function startServer(config) {
+
 	return new Promise((resolve, reject) => {
 		forger.parallel(
-			(finishCatIndexing) => {
-				console.log('Indexing categories...')
+
+			(endIndexingCategories) => {
 				let blogPath = path.resolve(config.settings.globals.path, config.settings.blog.path)
+				let msg = 'Indexing categories...'
+				process.stdout.write(msg + '\r');
+
 				core.indexCategories(blogPath).then((categories) => {
 					config.context.categories = categories
+					process.stdout.write(msg + '\t\t[ done ]\n');
 					//console.log(JSON.stringify(categories, null, 2))
-					finishCatIndexing()
-				}).catch((err) => finishCatIndexing(err))
+					endIndexingCategories()
+				}).catch((err) => {
+					process.stdout.write(msg + '\t\t[ error ]\n');
+					console.log(err)
+					endIndexingCategories(err)
+				})
+			},
+
+			(endIndexingArticles) => {
+				let blogPath = path.resolve(config.settings.globals.path, config.settings.blog.path)
+				let msg = 'Indexing articles...'
+				process.stdout.write(msg + '\r');
+
+				core.indexArticles(blogPath).then((articles) => {
+					//config.context.categories = categories
+					process.stdout.write(msg + '\t\t[ done ]\n');
+					console.log(JSON.stringify(articles, null, 2))
+					endIndexingArticles()
+				}).catch((err) => {
+					process.stdout.write(msg + '\t\t[ error ]\n');
+					console.log(err)
+					endIndexingArticles(err)
+				})
 			}
+
 		).then(() => {
 			server.start(function () {
 				console.log('Server started at: ' + server.info.uri)
+				resolve()
 			})
-			resolve()
+
 		}).catch((err) => reject(err))
 	})
 }
