@@ -53,18 +53,21 @@ function registerServer(config) {
 
 		Hoek.assert(!err, err)
 
-		config.blog.url = server.info.uri
+		config.context.url = server.info.uri
+
+		let rootPath = config.settings.globals.path
+		let themePath = config.settings.theme.path
 
 		server.views({
 			engines: {
 				hbs: Handlebars
-			}, context: config.blog,
-			relativeTo: config.rootPath,
-			path: config.theme.path,
-			layoutPath: path.join(config.theme.path, 'layout'),
-			helpersPath: path.join(config.theme.path, 'helpers'),
-			partialsPath: path.join(config.theme.path, 'partials'),
-			layout: 'default'
+			}, context: config.context,
+			relativeTo: rootPath,
+			path: config.settings.theme.path,
+			layoutPath: path.join(themePath, 'layout'),
+			helpersPath: path.join(themePath, 'helpers'),
+			partialsPath: path.join(themePath, 'partials'),
+			layout: config.settings.theme.layout
 		})
 
 		let routes = []
@@ -85,25 +88,30 @@ function registerServer(config) {
 			handler: function (request, reply) {
 
 				let uri = request.params.uri || ''
+				let rootPath = config.settings.globals.path
 				let referrer = url.parse(request.info.referrer).pathname;
 
 				let locations = [
-					path.join(config.rootPath, config.files.path, uri),
-					path.join(config.rootPath, config.theme.path, uri)
+					path.join(rootPath, config.settings.files.path, uri),
+					path.join(rootPath, config.settings.theme.path, uri)
 				]
 
 				if (referrer) {
-					// patch: uses referrer to prevent errors for uris with missing '/' at the end
-					locations.unshift(path.join(config.rootPath, config.files.path, referrer, uri))
+					// patch: uses referrer to prevent errors for uris with missing trailing fwd. slash
+					locations.unshift(path.join(rootPath, config.settings.files.path, referrer, uri))
+					// todo: request redirection would be better
 				}
 
-				fsSniff.file(locations, { index: config.files.index }).then((file) => {
+				// step 1: look for a static file
+				fsSniff.file(locations, { index: config.settings.files.index }).then((file) => {
+
 					if (file.stats.isFile()) {
 						// render static file
 						return reply.file(file.path)
 					}
 				}).catch(function (err) {
-					let articlePath = path.join(config.rootPath, config.blog.path, uri)
+					// step 2: look for a blog markdown file
+					let articlePath = path.join(rootPath, config.settings.blog.path, uri)
 					fsSniff.file(articlePath, { ext: '.md', type: 'any' }).then((file) => {
 						if (file.stats.isFile()) {
 							// render markdown
@@ -115,15 +123,28 @@ function registerServer(config) {
 							})
 						} else if (file.stats.isDirectory()) {
 							// render list sub-categories and posts
-							let categoryData =  core.findCategory(uri, config.blog.categories)
+							let categoryData =  core.findCategory(uri, config.context.categories)
 							return reply.view('category', {
 								category: categoryData,
 								text: JSON.stringify(categoryData, null, 2)
 							})
 						}
 
-					}).catch(function (error) {
-						reply('<h1>404</h1><h3>File not found</h3>', error).code(404)
+					}).catch((error) => {
+
+						// step3: look for pages markdown files
+						let pagePath = path.join(rootPath, config.settings.pages.path, uri)
+						fsSniff.file(pagePath, { ext: '.md', type: 'file' }).then((file) => {
+							// render markdown
+							fs.readFile(file.path, 'utf8', function (err, data) {
+								if (err) console.log(err);
+								return reply.view('post', {
+									text: markdown.makeHtml(data)
+								})
+							})
+						}).catch((err) => {
+							reply('<h1>404</h1><h3>File not found</h3>', error).code(404)
+						})
 					})
 				})
 			}
@@ -136,14 +157,14 @@ function registerServer(config) {
 function startServer(config) {
 	return new Promise((resolve, reject) => {
 		forger.parallel(
-			(complete) => {
+			(finishCatIndexing) => {
 				console.log('Indexing categories...')
-				let blogPath = path.resolve(config.rootPath, config.blog.path)
+				let blogPath = path.resolve(config.settings.globals.path, config.settings.blog.path)
 				core.indexCategories(blogPath).then((categories) => {
-					config.blog.categories = categories
+					config.context.categories = categories
 					//console.log(JSON.stringify(categories, null, 2))
-					complete()
-				}).catch((err) => complete(err))
+					finishCatIndexing()
+				}).catch((err) => finishCatIndexing(err))
 			}
 		).then(() => {
 			server.start(function () {

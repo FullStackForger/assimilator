@@ -1,25 +1,35 @@
 'use strict'
 const Assimilator = require('../')
 const config = {
-	rootPath: __dirname,
-	blog: {
+	settings: {
+		globals: {
+			path: __dirname
+		},
+		theme: {
+			path: 'themes/assimilator',
+			layout: 'default'
+		},
+		blog: {
+			path: './blog/'
+		},
+		pages: {
+			path: './pages/'
+		},
+		files: {
+			index: ['index.html', 'index.htm'],
+			path: './projects/'
+		}
+	},
+	context: {
 		title: 'My personal site',
 		menu: {
 			main: [
-				{ label: 'menu 1', url: 'http://localhost:8080/user/marek' },
-				{ label: 'menu r', url: 'http://localhost:8080/some/random/url/api.js?param1=ala&param2=ole' },
-				{ label: 'menu 2', url: 'http://localhost:8080/user/marek/nah' }
+				{ label: 'about', url: '/about' },
+				{ label: 'contact', url: '/contact' },
+				{ label: 'project-demo', url: '/project-demo' }
 			]
 		},
-		tags: ['blog', 'writing', 'engine', 'hapijs'],
-		path: 'blog'
-	},
-	files: {
-		index: ['index.html', 'index.htm'],
-		path: 'pages/'
-	},
-	theme: {
-		path: 'themes/assimilator'
+		tags: ['blog', 'writing', 'engine', 'hapijs']
 	}
 }
 
