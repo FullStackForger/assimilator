@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "forger": "^1.2.1",
-    "fs-sniff": "^1.5.2",
+    "fs-sniff": "^1.6.1",
     "handlebars": "^4.0.5",
     "hapi": "^12.1.0",
     "hoek": "^3.0.4",

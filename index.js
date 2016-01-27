@@ -85,10 +85,17 @@ function registerServer(config) {
 			handler: function (request, reply) {
 
 				let uri = request.params.uri || ''
+				let referrer = url.parse(request.info.referrer).pathname;
+
 				let locations = [
 					path.join(config.rootPath, config.files.path, uri),
 					path.join(config.rootPath, config.theme.path, uri)
 				]
+
+				if (referrer) {
+					// patch: uses referrer to prevent errors for uris with missing '/' at the end
+					locations.unshift(path.join(config.rootPath, config.files.path, referrer, uri))
+				}
 
 				fsSniff.file(locations, { index: config.files.index }).then((file) => {
 					if (file.stats.isFile()) {
@@ -97,7 +104,7 @@ function registerServer(config) {
 					}
 				}).catch(function (err) {
 					let articlePath = path.join(config.rootPath, config.blog.path, uri)
-					fsSniff.file(articlePath, { ext: '.md' }).then((file) => {
+					fsSniff.file(articlePath, { ext: '.md', type: 'any' }).then((file) => {
 						if (file.stats.isFile()) {
 							// render markdown
 							fs.readFile(file.path, 'utf8', function (err, data) {
