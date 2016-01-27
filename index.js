@@ -24,7 +24,6 @@ const
 		tasklists: true
 	})
 
-
 //new Assimilator.Server(config).start(callback)
 const Assimilator = {}
 Assimilator.Server = function (config) {
@@ -102,6 +101,25 @@ function registerServer(config) {
 					// todo: request redirection would be better
 				}
 
+				function renderMarkdown(filePath) {
+					// render markdown
+					fs.readFile(filePath, 'utf8', function (err, data) {
+						if (err) console.log(err);
+						return reply.view('post', {
+							text: markdown.makeHtml(data)
+						})
+					})
+				}
+
+				function renderCategory(uri) {
+					// render list sub-categories and posts
+					let categoryData =  core.findCategory(uri, config.context.categories)
+					return reply.view('category', {
+						category: categoryData,
+						text: JSON.stringify(categoryData, null, 2)
+					})
+				}
+
 				// step 1: look for a static file
 				fsSniff.file(locations, { index: config.settings.files.index }).then((file) => {
 
@@ -110,24 +128,14 @@ function registerServer(config) {
 						return reply.file(file.path)
 					}
 				}).catch(function (err) {
+
 					// step 2: look for a blog markdown file
 					let articlePath = path.join(rootPath, config.settings.blog.path, uri)
 					fsSniff.file(articlePath, { ext: '.md', type: 'any' }).then((file) => {
 						if (file.stats.isFile()) {
-							// render markdown
-							fs.readFile(file.path, 'utf8', function (err, data) {
-								if (err) console.log(err);
-								return reply.view('post', {
-									text: markdown.makeHtml(data)
-								})
-							})
+							renderMarkdown(file.path)
 						} else if (file.stats.isDirectory()) {
-							// render list sub-categories and posts
-							let categoryData =  core.findCategory(uri, config.context.categories)
-							return reply.view('category', {
-								category: categoryData,
-								text: JSON.stringify(categoryData, null, 2)
-							})
+							renderCategory(uri)
 						}
 
 					}).catch((error) => {
@@ -135,13 +143,7 @@ function registerServer(config) {
 						// step3: look for pages markdown files
 						let pagePath = path.join(rootPath, config.settings.pages.path, uri)
 						fsSniff.file(pagePath, { ext: '.md', type: 'file' }).then((file) => {
-							// render markdown
-							fs.readFile(file.path, 'utf8', function (err, data) {
-								if (err) console.log(err);
-								return reply.view('post', {
-									text: markdown.makeHtml(data)
-								})
-							})
+							renderMarkdown(file.path)
 						}).catch((err) => {
 							reply('<h1>404</h1><h3>File not found</h3>', error).code(404)
 						})
