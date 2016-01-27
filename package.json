@@ -4,6 +4,7 @@
   "description": "Super fast blogging engine",
   "main": "index.js",
   "dependencies": {
+    "forger": "^1.2.1",
     "fs-sniff": "^1.5.2",
     "handlebars": "^4.0.5",
     "hapi": "^12.1.0",

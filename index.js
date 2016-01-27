@@ -4,13 +4,19 @@ const
 	Hapi = require('hapi'),
 	Hoek = require('hoek'),
 	Showdown  = require('showdown'),
+	Handlebars = require('handlebars'),
 	path = require('path'),
 	util = require('util'),
-	handlebars = require('handlebars'),
 	fs = require('fs'),
-	fsSniff = require('fs-sniff'),
 	url = require('url'),
-	server = new Hapi.Server(),
+	fsSniff = require('fs-sniff'),
+	forger = require('forger'),
+	assimilator = require('./lib/core'),
+	server = new Hapi.Server({
+		debug: {
+			request: ['error']
+		}
+	}),
 	markdown = new Showdown.Converter({
 		tables: true,
 		strikethrough: true,
@@ -56,7 +62,7 @@ server.register([
 
 	server.views({
 		engines: {
-			hbs: handlebars
+			hbs: Handlebars
 		}, context: config.blog,
 		relativeTo: __dirname,
 		path: config.theme.path,
@@ -107,9 +113,10 @@ server.register([
 						})
 					} else if (file.stats.isDirectory()) {
 						// render list sub-categories and posts
+						let categoryData =  assimilator.findCategory(uri, config.blog.categories)
 						return reply.view('category', {
-							category: findCategory(uri),
-							text: JSON.stringify(findCategory(uri), null, 2)
+							category: categoryData,
+							text: JSON.stringify(categoryData, null, 2)
 						})
 					}
 
@@ -123,73 +130,19 @@ server.register([
 	server.route(routes)
 })
 
-indexCategories(config.blog.path)
-	.then((categories) => {
-		config.blog.categories = categories
-		//console.log(JSON.stringify(categories, null, 2))
-		server.start(function () {
-			console.log('Server started at: ' + server.info.uri)
-		});
+forger.parallel(
+	(complete) => {
+		assimilator.indexCategories(config.blog.path).then((categories) => {
+			config.blog.categories = categories
+			//console.log(JSON.stringify(categories, null, 2))
+			complete()
+		}).catch((err) => complete(err))
+	}
+).then(() => {
+	server.start(function () {
+		console.log('Server started at: ' + server.info.uri)
+	})
+}).catch((err) => {
+	console.log(err)
 })
 
-function findCategory(uri) {
-	let traverseCategories = function(uri, categories) {
-		let category = null
-		let subcategory = null
-		let index = 0
-		while (index < categories.length) {
-			category = categories[index]
-			if (category.uri === uri) return category
-			if (category.hasCategories) {
-				subcategory = traverseCategories(uri, category.categories)
-				if (subcategory != null) return subcategory
-			}
-			index ++
-		}
-		return null
-	}
-
-	return traverseCategories(uri, config.blog.categories)
-}
-
-function indexArticles(location) {
-	return new Promise((resolve, reject) => {
-		fsSniff
-			.list(config.blog.path, { type: 'file', depth: 10 })
-			.then((list) => {
-				console.log(JSON.stringify(list, null, 2))
-			})
-	})
-}
-
-function indexCategories(location) {
-	let categoryFromTree = function(dirTree) {
-		let dirArr = dirTree instanceof Array ? dirTree : [dirTree]
-		return dirArr.map((dirObj) => {
-			try {
-				let uri = dirObj.uri.replace(/^blog\//, '')
-				return {
-					name: dirObj.name,
-					uri: uri,
-					hasArticles: dirObj.files.length > 0,
-					articles: dirObj.files,
-					hasCategories: (dirObj.dirs.length > 0),
-					categories: categoryFromTree(dirObj.dirs)
-				}
-			} catch (err) {
-				console.log(err)
-				throw new Error(err)
-			}
-		})
-	}
-
-	return new Promise((resolve, reject) => {
-		return fsSniff
-			.tree(location, { depth: 10 })
-			.then((dirTree) => {
-				resolve(categoryFromTree(dirTree.dirs))
-			}).catch((error) => {
-				reject(error)
-			})
-	})
-}
