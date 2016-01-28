@@ -160,39 +160,39 @@ function registerServer(config) {
 function startServer(config) {
 
 	return new Promise((resolve, reject) => {
-		forger.parallel(
 
-			(endIndexingCategories) => {
+		// run setup sequence
+		forger.sequence(
+
+			(next) => {
 				let blogPath = path.resolve(config.settings.globals.path, config.settings.blog.path)
-				let msg = 'Indexing categories...'
-				console.log(msg)
+				process.stdout.write('Indexing categories...\t\t');
 
 				core.indexCategories(blogPath).then((categories) => {
 					config.context.categories = categories
-					console.log(msg + '\t\t[ done ]');
+					process.stdout.write('[ done ]\n');
 					//console.log(JSON.stringify(categories, null, 2))
-					endIndexingCategories()
+					next()
 				}).catch((err) => {
-					console.log(msg + '\t\t[ error ]');
+					process.stdout.write('[ error ]\n');
 					console.log(err)
-					endIndexingCategories(err)
+					next(err)
 				})
 			},
 
-			(endIndexingArticles) => {
+			(next) => {
 				let blogPath = path.resolve(config.settings.globals.path, config.settings.blog.path)
-				let msg = 'Indexing articles...'
-				console.log(msg)
+				process.stdout.write('Indexing articles...\t\t');
 
 				core.indexArticles(blogPath).then((articles) => {
-					console.log(msg + '\t\t[ done ]');
+					process.stdout.write('[ done ]\n');
 					//console.log(JSON.stringify(articles, null, 2))
 					config.context.articles = articles
-					endIndexingArticles()
+					next()
 				}).catch((err) => {
-					console.log(msg + '\t\t[ error ]');
+					process.stdout.write('[ error ]\n');
 					console.log(err)
-					endIndexingArticles(err)
+					next(err)
 				})
 			}
 
