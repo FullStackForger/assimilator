@@ -1,3 +1,10 @@
-<h1>{{title}}</h1>
-<p>{{message}}</p>
+{{#each articles}}
+	<article class="blog-post">
+	<h2><a href="{{this.uri}}">{{this.title}}</a></h2>
+	<p>{{this.info}}</p>
+	{{>tags}}
+	</article>
+	<hr/>
+{{/each}}
+
 {{{text}}}

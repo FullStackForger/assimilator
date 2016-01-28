@@ -77,9 +77,7 @@ function registerServer(config) {
 			method: 'GET',
 			path: '/',
 			handler: function (requestm, reply) {
-				return reply.view('index', {
-					text: 'index'
-				})
+				return reply.view('index')
 			}
 		})
 
@@ -106,7 +104,7 @@ function registerServer(config) {
 				function renderMarkdown(filePath) {
 					// render markdown
 					fs.readFile(filePath, 'utf8', function (err, data) {
-						if (err) console.log(err);
+						if (err) console.console.log(err);
 						return reply.view('post', {
 							text: markdown.makeHtml(data)
 						})
@@ -163,36 +161,36 @@ function startServer(config) {
 
 	return new Promise((resolve, reject) => {
 		forger.parallel(
-			/*
+
 			(endIndexingCategories) => {
 				let blogPath = path.resolve(config.settings.globals.path, config.settings.blog.path)
 				let msg = 'Indexing categories...'
-				process.stdout.write(msg + '\r');
+				console.log(msg)
 
 				core.indexCategories(blogPath).then((categories) => {
 					config.context.categories = categories
-					process.stdout.write(msg + '\t\t[ done ]\n');
+					console.log(msg + '\t\t[ done ]');
 					//console.log(JSON.stringify(categories, null, 2))
 					endIndexingCategories()
 				}).catch((err) => {
-					process.stdout.write(msg + '\t\t[ error ]\n');
+					console.log(msg + '\t\t[ error ]');
 					console.log(err)
 					endIndexingCategories(err)
 				})
 			},
-			*/
 
 			(endIndexingArticles) => {
 				let blogPath = path.resolve(config.settings.globals.path, config.settings.blog.path)
 				let msg = 'Indexing articles...'
-				process.stdout.write(msg + '\r');
+				console.log(msg)
 
 				core.indexArticles(blogPath).then((articles) => {
-					process.stdout.write(msg + '\t\t[ done ]\n');
-					console.log(JSON.stringify(articles, null, 2))
+					console.log(msg + '\t\t[ done ]');
+					//console.log(JSON.stringify(articles, null, 2))
+					config.context.articles = articles
 					endIndexingArticles()
 				}).catch((err) => {
-					process.stdout.write(msg + '\t\t[ error ]\n');
+					console.log(msg + '\t\t[ error ]');
 					console.log(err)
 					endIndexingArticles(err)
 				})
