@@ -1,11 +1,15 @@
 ```yml
 title: some title
+```
+
+<!--
 author: thomas brown
 tags: [blog, assimilator, example]
-info:>
-    some descriptive info about the post
-    split between lines so it is artificially longer
-```
+info: >
+  some descriptive info about the post
+  split between lines so it is artificially longer
+-->
+
 # article title
 
 This article comes from github [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)

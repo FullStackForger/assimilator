@@ -1,7 +1,7 @@
 ```yml
 title: second article
 tags: [blog, assimilator, example]
-info:>
+info: >
     some descriptive info about the post
     split between lines so it is artificially longer
 ```

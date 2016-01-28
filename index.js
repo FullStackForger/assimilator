@@ -163,7 +163,7 @@ function startServer(config) {
 
 	return new Promise((resolve, reject) => {
 		forger.parallel(
-
+			/*
 			(endIndexingCategories) => {
 				let blogPath = path.resolve(config.settings.globals.path, config.settings.blog.path)
 				let msg = 'Indexing categories...'
@@ -180,6 +180,7 @@ function startServer(config) {
 					endIndexingCategories(err)
 				})
 			},
+			*/
 
 			(endIndexingArticles) => {
 				let blogPath = path.resolve(config.settings.globals.path, config.settings.blog.path)
@@ -187,7 +188,6 @@ function startServer(config) {
 				process.stdout.write(msg + '\r');
 
 				core.indexArticles(blogPath).then((articles) => {
-					//config.context.categories = categories
 					process.stdout.write(msg + '\t\t[ done ]\n');
 					console.log(JSON.stringify(articles, null, 2))
 					endIndexingArticles()
