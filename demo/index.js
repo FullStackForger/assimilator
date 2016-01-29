@@ -6,7 +6,7 @@ const config = {
 			path: __dirname
 		},
 		theme: {
-			path: 'themes/assimilator',
+			path: './themes/assimilator',
 			layout: 'default'
 		},
 		blog: {

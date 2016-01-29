@@ -4,7 +4,6 @@ const
 	Hapi = require('hapi'),
 	Hoek = require('hoek'),
 	Showdown  = require('showdown'),
-	Handlebars = require('handlebars'),
 	path = require('path'),
 	util = require('util'),
 	fs = require('fs'),
@@ -56,20 +55,13 @@ function registerServer(config) {
 
 		config.context.url = server.info.uri
 
-		let rootPath = config.settings.globals.path
-		let themePath = config.settings.theme.path
+		let themePath = path.resolve(config.settings.globals.path, config.settings.theme.path, 'theme')
+		let themeConfig = require(themePath).config
+		themeConfig.context = Hoek.applyToDefaults(themeConfig.context, config.context)
+		// expose to global config
+		config.context = themeConfig.context
 
-		server.views({
-			engines: {
-				hbs: Handlebars
-			}, context: config.context,
-			relativeTo: rootPath,
-			path: config.settings.theme.path,
-			layoutPath: path.join(themePath, 'layout'),
-			helpersPath: path.join(themePath, 'helpers'),
-			partialsPath: path.join(themePath, 'partials'),
-			layout: config.settings.theme.layout
-		})
+		server.views(themeConfig)
 
 		let routes = []
 
@@ -120,38 +112,45 @@ function registerServer(config) {
 					})
 				}
 
-				// step 1: look for a static file
-				fsSniff.file(locations, { index: config.settings.files.index }).then((file) => {
+				forger.failover(
+					(complete) => {
+						fsSniff.file(locations, { index: config.settings.files.index }).then((file) => {
 
-					if (file.stats.isFile()) {
-						// render static file
-						return reply.file(file.path)
-					}
-				}).catch(function (err) {
-
-					// step 2: look for a blog markdown file
-					let articlePath = path.join(rootPath, config.settings.blog.path, uri)
-					fsSniff.file(articlePath, { ext: '.md', type: 'any' }).then((file) => {
-						if (file.stats.isFile()) {
-							renderMarkdown(file.path)
-						} else if (file.stats.isDirectory()) {
-							renderCategory(uri)
-						}
-
-					}).catch((error) => {
-
-						// step3: look for pages markdown files
+							if (file.stats.isFile()) {
+								// render static file
+								reply.file(file.path)
+								complete(true)
+							}
+						}).catch(() => complete(null))
+					},
+					(complete) => {
+						// look for a blog markdown file
+						let articlePath = path.join(rootPath, config.settings.blog.path, uri)
+						fsSniff.file(articlePath, { ext: '.md', type: 'any' }).then((file) => {
+							if (file.stats.isFile()) {
+								renderMarkdown(file.path)
+								complete(true)
+							} else if (file.stats.isDirectory()) {
+								renderCategory(uri)
+								complete(true)
+							}
+							complete(null)
+						}).catch(() => complete(null))
+					},
+					(complete) => {
+						// look for page markdown files
 						let pagePath = path.join(rootPath, config.settings.pages.path, uri)
 						fsSniff.file(pagePath, { ext: '.md', type: 'file' }).then((file) => {
 							renderMarkdown(file.path)
+							complete(true)
 						}).catch((err) => {
 							reply('<h1>404</h1><h3>File not found</h3>', error).code(404)
+							complete(null)
 						})
-					})
-				})
+					}
+				)
 			}
 		})
-
 		server.route(routes)
 	})
 }
