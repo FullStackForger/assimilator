@@ -1,8 +1,9 @@
 {{#each articles}}
 	<article class="blog-post">
-	<h2><a href="{{this.uri}}">{{this.title}}</a></h2>
-	<p>{{this.info}}</p>
-	{{>tags}}
+	<h2><a href="/{{this.uri}}">{{this.title}}</a></h2>
+	<p>{{info}}</p>
+	 {{article.tags}}
+		{{>internal/tag-list}}
 	</article>
 	<hr/>
 {{/each}}

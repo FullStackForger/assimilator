@@ -28,8 +28,7 @@ const config = {
 				{ label: 'contact', url: '/contact' },
 				{ label: 'project-demo', url: '/project-demo' }
 			]
-		},
-		tags: ['blog', 'writing', 'engine', 'hapijs']
+		}
 	}
 }
 

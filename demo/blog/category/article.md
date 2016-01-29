@@ -1,14 +1,7 @@
 ```yml
 title: some title
+tags: [blog, test, article, lorem, ipsum]
 ```
-
-<!--
-author: thomas brown
-tags: [blog, assimilator, example]
-info: >
-  some descriptive info about the post
-  split between lines so it is artificially longer
--->
 
 # article title
 

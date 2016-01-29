@@ -76,6 +76,11 @@ hr.small {
 .item-tags {
 	margin-bottom: 1.5em;
 }
+
+.item-tags > ul  li {
+	display: inline-block;
+}
+
 .item-tags a {
 	display: inline-block;
 	background-image: url('../img/tags.png');
@@ -240,6 +245,30 @@ hr.small {
 .sidebar .categories > ul > li:first-child { border-top: none; }
 .sidebar .categories li a:hover { color: #337ab7; }
 .sidebar .categories li > ul { margin: 0.5em 0 0 1em; }
+
+.sidebar .tags > ul li,
+.sidebar .tags > ul li a { display: inline-block; }
+.sidebar .tags > ul li a {
+	border-radius: 10px;
+	border: 1px solid #B3CADE;
+	color: white;
+	padding: 0.5em 1em;
+	font-size: 0.8em;
+	margin: 0 0.5em 0.5em 0;
+}
+
+.sidebar .tags > ul li a:hover { color: #0085a1 !important; border: 1px solid #0085a1 !important; }
+/* percentage based sizes for tag cloud */
+.sidebar .tags > ul li.ratio1 a { color: #afafaf; border: 1px solid #afafaf; font-size: 0.75em; }
+.sidebar .tags > ul li.ratio2 a { color: #a6a6a6; border: 1px solid #a6a6a6; font-size: 0.8em; }
+.sidebar .tags > ul li.ratio3 a { color: #a0a0a0; border: 1px solid #a0a0a0; font-size: 0.85em; }
+.sidebar .tags > ul li.ratio4 a { color: #9f9f9f; border: 1px solid #9f9f9f; font-size: 0.9em; }
+.sidebar .tags > ul li.ratio5 a { color: #969696; border: 1px solid #969696; font-size: 0.95em; }
+.sidebar .tags > ul li.ratio6 a { color: #909090; border: 1px solid #909090; font-size: 1em; }
+.sidebar .tags > ul li.ratio7 a { color: #8f8f8f; border: 1px solid #8f8f8f; font-size: 1.05em; }
+.sidebar .tags > ul li.ratio8 a { color: #868686; border: 1px solid #868686; font-size: 1.1em; }
+.sidebar .tags > ul li.ratio9 a { color: #808080; border: 1px solid #808080; font-size: 1.2em; }
+.sidebar .tags > ul li.ratio10 a { color: #7f7f7f; border: 1px solid #7f7f7f; }
 
 .intro-header {
 	background-color: #808080;
