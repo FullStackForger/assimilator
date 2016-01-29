@@ -5,6 +5,8 @@ const
 var
 	theme = module.exports = {}
 
+// exports server.views config object
+// http://hapijs.com/tutorials/views
 
 theme.config = {
 	engines: {
@@ -18,7 +20,6 @@ theme.config = {
 		}
 	},
 	relativeTo: __dirname,
-	//relativeTo: './demo/themes/assimilator',
 	path: './',
 
 	layoutPath: './layout',
