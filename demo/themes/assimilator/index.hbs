@@ -1,11 +1,10 @@
 {{#each articles}}
 	<article class="blog-post">
 	<h2><a href="/{{this.uri}}">{{this.title}}</a></h2>
-	<p>{{info}}</p>
-	 {{article.tags}}
+	<h5>{{info}}</h5>
+	<div class="item-tags">
 		{{>internal/tag-list}}
+	</div>
 	</article>
 	<hr/>
 {{/each}}
-
-{{{text}}}
