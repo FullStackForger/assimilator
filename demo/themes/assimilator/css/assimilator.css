@@ -134,6 +134,7 @@ hr.small {
 .navbar-custom .nav li a,
 .navbar-custom .navbar-brand {
 	font-family: 'Oswald', 'Yanone Kaffeesatz', 'Open Sans Condensed', Tahoma, Geneva, sans-serif;
+	height: auto;
 }
 .navbar-custom .nav li a {
 	text-transform: uppercase;
@@ -146,30 +147,39 @@ hr.small {
 		background: black;
 		border-bottom: 1px solid #fff;
 	}
+
 	.navbar-custom .navbar-brand {
 		color: white;
-		padding: 20px;
+		padding: 10px;
 		margin: 7.5px -15px;
 	}
+
 	.navbar-custom .navbar-brand:hover,
 	.navbar-custom .navbar-brand:focus {
 		color: rgba(255, 255, 255, 0.8);
 	}
+
 	.navbar-custom .nav li a {
 		color: white;
-		padding: 20px;
+		padding: 10px;
 	}
+
 	.navbar-custom .nav li a:hover,
 	.navbar-custom .nav li a:focus {
 		color: rgba(255, 255, 255, 0.8);
 	}
 
-	.navbar-custom .navbar-nav { margin: 7.5px -15px; }
-	.navbar-custom .navbar-collapse .nav li { border: none; }
+	.navbar-custom .navbar-nav {
+		margin: 7.5px -15px;
+	}
 
-	.navbar-custom .navbar-nav>.open>a,
-	.navbar-custom .navbar-nav>.open>a:focus,
-	.navbar-custom .navbar-nav>.open>a:hover {
+	.navbar-custom .navbar-collapse .nav li {
+		border: none;
+	}
+
+	.navbar-custom .navbar-nav > .open > a,
+	.navbar-custom .navbar-nav > .open > a:focus,
+	.navbar-custom .navbar-nav > .open > a:hover {
 		color: inherit;
 		background-color: inherit;
 	}
@@ -178,8 +188,8 @@ hr.small {
 		background: black;
 	}
 
-	.navbar-custom .dropdown-menu>li>a:focus,
-	.navbar-custom .dropdown-menu>li>a:hover {
+	.navbar-custom .dropdown-menu > li > a:focus,
+	.navbar-custom .dropdown-menu > li > a:hover {
 		background: rgba(255, 255, 255, 0.2);
 	}
 
@@ -204,7 +214,7 @@ hr.small {
 	.navbar-custom.is-fixed {
 		/* when the user scrolls down, we hide the header right above the viewport */
 		position: fixed;
-		top: -81px;
+		top: -61px;
 		background-color: rgba(255, 255, 255, 0.9);
 		border-bottom: 1px solid #f2f2f2;
 		-webkit-transition: -webkit-transform 0.3s;
