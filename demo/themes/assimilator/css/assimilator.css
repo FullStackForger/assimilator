@@ -129,6 +129,8 @@ hr.small {
 	width: 100%;
 	z-index: 3;
 }
+.navbar-custom .navbar-nav { margin: 0 -15px 7.5px; }
+.navbar-custom .navbar-collapse .nav li { border-bottom: solid 1px #e7e7e7; }
 .navbar-custom .nav li a,
 .navbar-custom .navbar-brand {
 	font-family: 'Oswald', 'Yanone Kaffeesatz', 'Open Sans Condensed', Tahoma, Geneva, sans-serif;
@@ -147,6 +149,7 @@ hr.small {
 	.navbar-custom .navbar-brand {
 		color: white;
 		padding: 20px;
+		margin: 7.5px -15px;
 	}
 	.navbar-custom .navbar-brand:hover,
 	.navbar-custom .navbar-brand:focus {
@@ -161,6 +164,9 @@ hr.small {
 		color: rgba(255, 255, 255, 0.8);
 	}
 
+	.navbar-custom .navbar-nav { margin: 7.5px -15px; }
+	.navbar-custom .navbar-collapse .nav li { border: none; }
+
 	.navbar-custom .navbar-nav>.open>a,
 	.navbar-custom .navbar-nav>.open>a:focus,
 	.navbar-custom .navbar-nav>.open>a:hover {
@@ -171,19 +177,17 @@ hr.small {
 	.navbar-custom .dropdown-menu {
 		background: black;
 	}
+
 	.navbar-custom .dropdown-menu>li>a:focus,
 	.navbar-custom .dropdown-menu>li>a:hover {
 		background: rgba(255, 255, 255, 0.2);
 	}
-}
 
-@media only screen and (min-width: 768px) {
 	.navbar-custom .navbar-form.navbar-search {
 		margin-top: 12px;
 		display: none;
 	}
-}
-@media only screen and (min-width: 768px) {
+
 	.navbar-custom {
 		-webkit-transition: background-color 0.3s;
 		-moz-transition: background-color 0.3s;
@@ -200,7 +204,7 @@ hr.small {
 	.navbar-custom.is-fixed {
 		/* when the user scrolls down, we hide the header right above the viewport */
 		position: fixed;
-		top: -61px;
+		top: -81px;
 		background-color: rgba(255, 255, 255, 0.9);
 		border-bottom: 1px solid #f2f2f2;
 		-webkit-transition: -webkit-transform 0.3s;
