@@ -273,7 +273,8 @@ hr.small {
 
 .sidebar .tags > ul li a:hover { border: 1px solid #0085a1 !important; }
 /* percentage based sizes for tag cloud */
-.sidebar .tags > ul li.ratio1 a { color: #afafaf; border: 1px solid #dedede; font-size: 0.6em; }
+.sidebar .tags > ul li.ratio0 a { color: #afafaf; border: 1px solid #dedede; font-size: 0.6em; }
+.sidebar .tags > ul li.ratio1 a { color: #afafaf; border: 1px solid #dedede; font-size: 0.65em; }
 .sidebar .tags > ul li.ratio2 a { color: #a6a6a6; border: 1px solid #dedede; font-size: 0.7em; }
 .sidebar .tags > ul li.ratio3 a { color: #a0a0a0; border: 1px solid #dedede; font-size: 0.75em; }
 .sidebar .tags > ul li.ratio4 a { color: #9f9f9f; border: 1px solid #dedede; font-size: 0.8em; }
