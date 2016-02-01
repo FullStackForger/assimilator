@@ -2,14 +2,16 @@
 	<h1>{{category.name}}</h1>
 
 	{{#if category.hasCategories}}
-		<h5>Categories</h5>
+		<p>Sub-categories</p>
 		{{#each category.categories}}
-			<li><a href="{{url}}/{{this.uri}}">{{this.name}} ({{this.articles.length}})</a></li>
+		<article class="blog-post">
+			<h3><a href="{{../url}}/{{this.uri}}">{{this.name}} ({{this.articles.length}})</a></h3>
+		</article>
 		{{/each}}
 	{{/if}}
 
 	{{#if category.hasArticles}}
-		<h5>Articles</h5>
+		<p>Articles</p>
 		{{>articles}}
 	{{/if}}
 </article>

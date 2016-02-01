@@ -1,7 +1,7 @@
 {{#each articles}}
 	<article class="blog-post">
-		<h2><a href="{{../url}}/{{this.uri}}">{{this.title}}</a></h2>
-		<h5>{{info}}</h5>
+		<h3><a href="/{{this.uri}}">{{this.title}}</a></h3>
+		<p class="lead">{{info}}</p>
 		<div class="item-tags">
 			{{>internal/tag-list}}
 		</div>
