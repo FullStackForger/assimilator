@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "forger": "^1.4.0",
-    "fs-sniff": "^1.6.1",
+    "fs-sniff": "^1.6.3",
     "handlebars": "^4.0.5",
     "hapi": "^12.1.0",
     "hoek": "^3.0.4",
@@ -18,7 +18,7 @@
     "nodemon": "^1.8.1"
   },
   "scripts": {
-    "nodemon": "nodemon index.js  -e js,html,hbs,css,md",
+    "demo": "nodemon demo/index.js  -e js,html,hbs,css,md",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
