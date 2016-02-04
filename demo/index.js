@@ -10,6 +10,7 @@ const config = {
 			layout: 'default'
 		},
 		blog: {
+			//path: '../../blog.indieforger.com'
 			path: './blog/'
 		},
 		pages: {
@@ -47,7 +48,6 @@ const config = {
 			{ channel: 'send', url: '' }
 			{ channel: 'rss', url: '' }
 			 */
-
 		]
 	}
 }

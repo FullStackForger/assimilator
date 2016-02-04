@@ -1,11 +1,8 @@
 ```yml
-title: some title
-tags: [blog, example]
+title: Article inside of draft category
 ```
 
-# Article without meta data
-
-This article comes from github [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+# Article inside of draft category
 
 some lore ipsum introduction. some lore ipsum introduction. some lore ipsum introduction. 
 some lore ipsum introduction. some lore ipsum introduction. some lore ipsum introduction. 
