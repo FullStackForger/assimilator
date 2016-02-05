@@ -1,6 +1,6 @@
 {
   "name": "assimilator",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Super fast blogging engine",
   "main": "index.js",
   "dependencies": {
