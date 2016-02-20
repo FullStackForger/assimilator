@@ -1,6 +1,11 @@
 'use strict'
 const Assimilator = require('../')
 const config = {
+	server: {
+		env: "production",
+		host: "localhost",
+		port: 8080
+	},
 	settings: {
 		globals: {
 			path: __dirname
