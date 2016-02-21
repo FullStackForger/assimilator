@@ -72,6 +72,10 @@ hr.small {
 	border: 1px solid #ddd;
 }
 
+.blog-post-signature {
+	padding: 5px;
+}
+
 .item-tags {
 	margin-bottom: 1.5em;
 }
