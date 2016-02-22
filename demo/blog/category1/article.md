@@ -1,9 +1,9 @@
 ```yml
-title: some title
+title: Some YML Title
 tags: [blog, test, article, lorem, ipsum]
 ```
 
-# article title
+# Some Title different than in YML
 
 This article comes from github [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 

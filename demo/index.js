@@ -16,7 +16,11 @@ const config = {
 		},
 		blog: {
 			//path: '../../blog.indieforger.com'
-			path: './blog/'
+			path: './blog/',
+			series: {
+				longTitle: true,
+				longTitleDelimiter: ' '
+			}
 		},
 		pages: {
 			path: './pages/'
