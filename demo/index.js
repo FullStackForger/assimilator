@@ -18,6 +18,7 @@ const config = {
 			//path: '../../blog.indieforger.com'
 			path: './blog/',
 			series: {
+				listAsCategory: false,
 				longTitle: true,
 				longTitleDelimiter: ' '
 			}
