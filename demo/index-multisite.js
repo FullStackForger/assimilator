@@ -1,8 +1,10 @@
 'use strict'
 const Assimilator = require('../')
-const config = {
+const Hoek = require('hoek')
+const Forger = require('forger')
+const defaults = {
 	server: {
-		env: "production",
+		env: "development",
 		host: "localhost",
 		port: 8080
 	},
@@ -15,8 +17,7 @@ const config = {
 			layout: 'default'
 		},
 		blog: {
-			//path: '../../blog.indieforger.com'
-			path: './blog/',
+			path: './blog.second-site.com/',
 			series: {
 				listAsCategory: false,
 				longTitle: true,
@@ -47,25 +48,34 @@ const config = {
 			{ channel: 'youtube', url: 'https://www.youtube.com/channel/UCWPbP_gp1lUk46wMiIGoXAQ' },
 			{ channel: 'github', url: 'https://github.com/indieforger' },
 			{ channel: 'google-plus', url: 'https://plus.google.com/b/103153982100921182774/103153982100921182774' },
-			{ channel: 'facebook', url: 'https://www.facebook.com/indieforger' },
-			/*
-			{ channel: 'steam', url: '' }
-			{ channel: 'reddit', url: '' }
-			{ channel: 'android', url: '' }
-			{ channel: 'apple', url: '' }
-			{ channel: 'instagram', url: '' }
-			{ channel: 'linkedin', url: '' }
-			{ channel: 'send', url: '' }
-			{ channel: 'rss', url: '' }
-			 */
+			{ channel: 'facebook', url: 'https://www.facebook.com/indieforger' }
 		]
 	}
 }
 
-new Assimilator
-	.Server(config)
-	.start().then(() => {
-		//console.log('successful')
-	}).catch((err) => {
-		console.log(err)
-	})
+const config1 = Hoek.clone(defaults)
+config1.server.port = 9001
+config1.settings.blog.path = './blog.first-site.com/'
+
+const config2 = Hoek.clone(defaults)
+config2.server.port = 9002
+config2.settings.blog.path = './blog.second-site.com/'
+
+function startServer(config, next) {
+	new Assimilator
+		.Server(config)
+		.start().then((server) => {
+			console.log('Server started at: ' + server.info.uri + ' SUCCESS')
+			next()
+		}).catch((err) => {
+			next(err)
+		})
+}
+
+Forger
+	.sequence(
+		(next) => startServer(config1, next),
+		(next) => startServer(config2, next)
+	)
+	.then(() => console.log('All servers started'))
+	.catch((error) => console.error(error))
