@@ -56,10 +56,12 @@ const defaults = {
 const config1 = Hoek.clone(defaults)
 config1.server.port = 9001
 config1.settings.blog.path = './blog.first-site.com/'
+config1.context.title =  'First personal site'
 
 const config2 = Hoek.clone(defaults)
 config2.server.port = 9002
 config2.settings.blog.path = './blog.second-site.com/'
+config2.context.title =  'Second personal site'
 
 function startServer(config, next) {
 	new Assimilator
