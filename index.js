@@ -1,2 +1,2 @@
-'use strict'
-module.exports = require('./lib/assimilator')
+'use strict';
+const Assimilator = module.exports = require('./lib/assimilator');
