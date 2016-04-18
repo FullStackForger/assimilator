@@ -59,7 +59,7 @@ Assimilator
 	.start(config)
 	.then((server) => {
 		server.connections.forEach((connection) => {
-			console.log(`Server started at: ${connection.info.uri}`);
+			console.log(`\nServer started at: ${connection.info.uri}`);
 		});
 	})
 	.catch((error) => {
