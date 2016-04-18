@@ -42,7 +42,6 @@ to support [handlebars][handlebars] minimal templating.
 
 
 
-
 [example]: https://github.com/indieforger/assimilator/tree/master/demo
 [hapi-vision]: https://github.com/hapijs/vision
 [handlebars]: http://handlebarsjs.com/
