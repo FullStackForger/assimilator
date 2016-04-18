@@ -55,5 +55,5 @@ Assimilator
 			console.log(`Server started at: ${connection.info.uri}`);
 		});
 	}).catch((err) => {
-		console.log(err)
+		console.log(err.stack)
 	});
