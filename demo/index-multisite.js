@@ -3,7 +3,7 @@ const Assimilator = require('../');
 const config = {
 	env: 'development',
 	site: {
-		rootPath: __dirname,
+		rootPath: './',
 		series: {
 			listAsCategory: false,
 			longTitle: true,

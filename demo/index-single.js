@@ -8,7 +8,7 @@ const config = {
 			port: 8080,
 			name: 'default'
 		},
-		rootPath: __dirname,
+		rootPath: './',
 		path: './blog.first-site.com',
 		theme: {
 			path: './themes/assimilator',
